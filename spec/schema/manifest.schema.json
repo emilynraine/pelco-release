@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pelco-release:v1:manifest",
+  "title": "Pelco release manifest, format version 1",
+  "description": "Structure only. Cross-field rules that a schema can't express (component starts with product, unique payload names, nonce prefixes and recipient key IDs, encrypted size arithmetic) are in release-format.md section 3 to 5 and are checked by every reader.",
+  "type": "object",
+  "required": [
+    "format",
+    "format_version",
+    "product",
+    "component",
+    "version",
+    "reported_version",
+    "channel",
+    "hardware",
+    "routes",
+    "payload",
+    "build"
+  ],
+  "properties": {
+    "format": { "const": "pelco-release" },
+    "format_version": { "const": 1 },
+    "product": { "$ref": "#/$defs/product_id" },
+    "component": { "$ref": "#/$defs/component_id" },
+    "version": { "$ref": "#/$defs/semver" },
+    "reported_version": {
+      "type": "string",
+      "pattern": "^[\\x20-\\x7E]{1,64}$"
+    },
+    "channel": { "enum": ["test", "release"] },
+    "hardware": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/hardware_id" }
+    },
+    "requires": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/token" }
+    },
+    "payload": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/payload" }
+    },
+    "recipients": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/recipient" }
+    },
+    "build": { "$ref": "#/$defs/build" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "channel": { "const": "release" } } },
+      "then": { "properties": { "version": { "$ref": "#/$defs/semver_release" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "payload": { "contains": { "required": ["encryption"] } }
+        }
+      },
+      "then": { "required": ["recipients"] }
+    }
+  ],
+  "$defs": {
+    "product_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+    },
+    "component_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,31}(\\.[a-z0-9][a-z0-9-]{0,31}){2}$"
+    },
+    "hardware_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.-]{0,63}$"
+    },
+    "key_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-(0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(\\.(0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?$"
+    },
+    "semver_release": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "requirement": {
+      "type": "object",
+      "required": ["component", "scope"],
+      "properties": {
+        "component": { "$ref": "#/$defs/component_id" },
+        "scope": { "enum": ["unit", "system"] },
+        "min": { "$ref": "#/$defs/semver" },
+        "max_exclusive": { "$ref": "#/$defs/semver" }
+      },
+      "anyOf": [
+        { "required": ["min"] },
+        { "required": ["max_exclusive"] }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["name", "type", "size", "sha256"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,64}$",
+          "not": { "enum": ["manifest.json", "manifest.sig"] }
+        },
+        "type": { "$ref": "#/$defs/token" },
+        "size": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "encryption": { "$ref": "#/$defs/encryption" },
+        "plain_size": { "type": "integer", "minimum": 1 },
+        "plain_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "if": { "required": ["encryption"] },
+      "then": { "required": ["plain_size", "plain_sha256"] },
+      "else": {
+        "not": {
+          "anyOf": [
+            { "required": ["plain_size"] },
+            { "required": ["plain_sha256"] }
+          ]
+        }
+      }
+    },
+    "encryption": {
+      "type": "object",
+      "required": ["alg", "chunk_size", "nonce_prefix"],
+      "properties": {
+        "alg": { "const": "aes-256-gcm-chunked" },
+        "chunk_size": { "type": "integer", "minimum": 1024, "maximum": 1048576 },
+        "nonce_prefix": { "type": "string", "pattern": "^[0-9a-f]{16}$" }
+      }
+    },
+    "recipient": {
+      "type": "object",
+      "required": ["key_id", "alg", "ephemeral_pub", "wrapped_key"],
+      "properties": {
+        "key_id": { "$ref": "#/$defs/key_id" },
+        "alg": { "const": "x25519-hkdf-sha256-aes-kw" },
+        "ephemeral_pub": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "wrapped_key": { "type": "string", "pattern": "^[0-9a-f]{80}$" }
+      }
+    },
+    "build": {
+      "type": "object",
+      "required": ["source", "commit", "built_at"],
+      "properties": {
+        "source": { "type": "string", "pattern": "^[\\x21-\\x7E]{1,128}$" },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" },
+        "built_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+        }
+      }
+    }
+  }
+}

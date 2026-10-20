@@ -1,0 +1,34 @@
+{
+  "description": "Result codes for checking and installing a release. Every implementation reports these exact codes, so a failure reads the same on a device, in a host app and in PelcoHub. `step` is the step in release-format.md section 7. Codes are never renumbered or reused.",
+  "codes": [
+    { "code": "OK", "number": 0, "step": null, "meaning": "Every check passed." },
+
+    { "code": "RELEASE_MALFORMED", "number": 1, "step": 1, "meaning": "The release file isn't a valid release container: wrong entries, wrong order, or over a size limit." },
+
+    { "code": "SIGNATURE_MALFORMED", "number": 2, "step": 2, "meaning": "manifest.sig isn't a valid signature file." },
+    { "code": "KEY_UNKNOWN", "number": 3, "step": 2, "meaning": "No signature is by a key in the keyring." },
+    { "code": "SIGNATURE_INVALID", "number": 4, "step": 2, "meaning": "A signature by a known key doesn't verify over the manifest bytes." },
+
+    { "code": "FORMAT_UNSUPPORTED", "number": 5, "step": 3, "meaning": "The manifest's format or format_version isn't supported by this reader." },
+    { "code": "MANIFEST_INVALID", "number": 6, "step": 4, "meaning": "The manifest isn't valid JSON, or breaks the schema or a rule of the format." },
+
+    { "code": "KEY_NOT_PERMITTED", "number": 7, "step": 5, "meaning": "The signing key isn't allowed to sign this channel or product, or has expired." },
+
+    { "code": "CHANNEL_NOT_ALLOWED", "number": 8, "step": 6, "meaning": "The installer doesn't accept this channel, for example a test release on a unit not set up for testing." },
+    { "code": "WRONG_COMPONENT", "number": 9, "step": 7, "meaning": "The release is for a different component than the one being updated." },
+    { "code": "HARDWARE_INCOMPATIBLE", "number": 10, "step": 8, "meaning": "The target unit's hardware isn't in the release's hardware list." },
+    { "code": "ROUTE_NOT_ALLOWED", "number": 11, "step": 9, "meaning": "The release may not be installed over the route being used." },
+    { "code": "REQUIREMENT_NOT_MET", "number": 12, "step": 10, "meaning": "A required component is missing, out of range, or its version is unknown." },
+    { "code": "ALREADY_INSTALLED", "number": 13, "step": 11, "meaning": "The same version is already installed and a reinstall wasn't requested." },
+    { "code": "DOWNGRADE_NOT_ALLOWED", "number": 14, "step": 11, "meaning": "The release is older than what's installed and the downgrade flag wasn't given." },
+    { "code": "PAYLOAD_TYPE_UNSUPPORTED", "number": 15, "step": 12, "meaning": "The installer doesn't know how to install one of the payload types." },
+
+    { "code": "NO_RECIPIENT_KEY", "number": 16, "step": 13, "meaning": "The release is encrypted and the installer holds none of its recipient keys." },
+    { "code": "KEY_UNWRAP_FAILED", "number": 17, "step": 13, "meaning": "The content key couldn't be unwrapped with the installer's recipient key." },
+
+    { "code": "PAYLOAD_SIZE_MISMATCH", "number": 18, "step": 14, "meaning": "A payload's stored size doesn't match the manifest." },
+    { "code": "PAYLOAD_HASH_MISMATCH", "number": 19, "step": 14, "meaning": "A payload's stored SHA-256 doesn't match the manifest." },
+    { "code": "DECRYPT_FAILED", "number": 20, "step": 14, "meaning": "A chunk of an encrypted payload failed authentication." },
+    { "code": "PLAIN_HASH_MISMATCH", "number": 21, "step": 14, "meaning": "A decrypted payload's size or SHA-256 doesn't match the manifest." }
+  ]
+}

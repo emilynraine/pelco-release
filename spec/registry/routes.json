@@ -1,0 +1,25 @@
+{
+  "description": "How a release can reach a unit. A release lists the routes it may use; an installer ignores routes it doesn't know. Add a route here before any release uses it.",
+  "routes": [
+    {
+      "id": "ble",
+      "meaning": "Bluetooth Low Energy, from a host to the unit."
+    },
+    {
+      "id": "usb",
+      "meaning": "A USB connection from a host to the unit, including USB serial."
+    },
+    {
+      "id": "serial",
+      "meaning": "A serial link from a host to the unit other than USB, including Bluetooth SPP."
+    },
+    {
+      "id": "network",
+      "meaning": "An IP network: HTTP, WebSocket or similar, from a host or a server."
+    },
+    {
+      "id": "relay",
+      "meaning": "Through a parent device that receives the release and installs it on the unit, for example a controller updating the buttons attached to it."
+    }
+  ]
+}

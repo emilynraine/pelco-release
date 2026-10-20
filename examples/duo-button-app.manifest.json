@@ -1,0 +1,63 @@
+{
+  "format": "pelco-release",
+  "format_version": 1,
+  "product": "duo",
+  "component": "duo.button.app",
+  "version": "2.3.0",
+  "reported_version": "2.3.0",
+  "channel": "release",
+  "hardware": [
+    "duo-button-v1"
+  ],
+  "requires": [
+    {
+      "component": "duo.button.boot",
+      "scope": "unit",
+      "min": "1.4.0"
+    },
+    {
+      "component": "duo.controller.app",
+      "scope": "system",
+      "min": "4.2.0"
+    }
+  ],
+  "routes": [
+    "relay",
+    "usb",
+    "ble"
+  ],
+  "payload": [
+    {
+      "name": "duo.bin",
+      "type": "raw-bin",
+      "size": 94200,
+      "sha256": "de0ce48c38580bae5b51c1dd1eeeb20ee95fe24e8c0a35e7939d534f09600a85",
+      "encryption": {
+        "alg": "aes-256-gcm-chunked",
+        "chunk_size": 4096,
+        "nonce_prefix": "fc032acbe1087806"
+      },
+      "plain_size": 93832,
+      "plain_sha256": "01cbb96ada274968f0a288b503fae70bc642cc10d2d1dc0312d9db0c5c8aec99"
+    }
+  ],
+  "recipients": [
+    {
+      "key_id": "duo-controller-2026",
+      "alg": "x25519-hkdf-sha256-aes-kw",
+      "ephemeral_pub": "77eddf6d6f02de2e4d144aa8a1a2f3676415ea84778b87d4d955797e85c01311",
+      "wrapped_key": "302e976221372f518bd15485f2fa508a53fdbe27efe6ad87c9992e06dbf53583b6e669dc556a2fc7"
+    },
+    {
+      "key_id": "pelcoone-2026",
+      "alg": "x25519-hkdf-sha256-aes-kw",
+      "ephemeral_pub": "0aa26df15adcb12c88fbd5b9ea3c132547caa66a534c3cd84f052fd3b6ba69a5",
+      "wrapped_key": "c48ded2c3d6d5e1e975c2dca0e254ffbf1edf158e2055be77734ea98a7f7d9b68690cc451dafcd25"
+    }
+  ],
+  "build": {
+    "source": "guardian-duo@v2.3.0",
+    "commit": "5afb83f7c5637d0e396f3aa99ed141dd4afd40b9",
+    "built_at": "2026-10-19T15:24:00Z"
+  }
+}

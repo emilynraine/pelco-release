@@ -1,0 +1,43 @@
+{
+  "format": "pelco-release",
+  "format_version": 1,
+  "product": "dfb-slim",
+  "component": "dfb-slim.sign.app",
+  "version": "1.8.0-rc.1",
+  "reported_version": "1.8.0-rc.1",
+  "channel": "test",
+  "hardware": [
+    "dfb-slim-esp32-rev-c"
+  ],
+  "routes": [
+    "ble"
+  ],
+  "payload": [
+    {
+      "name": "dfb_slim_fw.bin",
+      "type": "esp-app-image",
+      "size": 798096,
+      "sha256": "06a4f34f1d475576dd7719955af92bd41297ef7e2413dd99ad926fe0b37fb550",
+      "encryption": {
+        "alg": "aes-256-gcm-chunked",
+        "chunk_size": 4096,
+        "nonce_prefix": "a3bcc8bad34b160b"
+      },
+      "plain_size": 794976,
+      "plain_sha256": "e523d14d5dd5d6f3a83aad237e182941f60690aedbdd8b83615a3ded1003b838"
+    }
+  ],
+  "recipients": [
+    {
+      "key_id": "dfb-slim-device-2026",
+      "alg": "x25519-hkdf-sha256-aes-kw",
+      "ephemeral_pub": "1ffd11293f857ee93bbd1073fef50edc42b25e0222cf3ba4373c6d5c2a27c6e7",
+      "wrapped_key": "ba71511578d0df3f20ba6169a1d741df2338585b7e01e4477947ce55a3bc61f0249030639bad3c41"
+    }
+  ],
+  "build": {
+    "source": "dfb-slim@v1.8.0-rc.1",
+    "commit": "4b0a52a901954198452a5bf636c103f9976892db",
+    "built_at": "2026-10-19T15:24:00Z"
+  }
+}

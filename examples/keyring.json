@@ -1,0 +1,40 @@
+{
+  "format": "pelco-release-keyring",
+  "format_version": 1,
+  "keys": [
+    {
+      "key_id": "duo-release-2026",
+      "alg": "ed25519",
+      "public_key": "ad9c2264f3591f51ab643ec7c8277a6ab5f810b8a67d7b8aede51058245d4995",
+      "channels": [
+        "release"
+      ],
+      "products": [
+        "duo"
+      ]
+    },
+    {
+      "key_id": "duo-test-2026",
+      "alg": "ed25519",
+      "public_key": "1639204e7571e204d009eeca8d595de3a2e281f087b7226b9a72a53225a204b4",
+      "channels": [
+        "test"
+      ],
+      "products": [
+        "duo"
+      ]
+    },
+    {
+      "key_id": "dfb-slim-test-2026",
+      "alg": "ed25519",
+      "public_key": "5e555c3c572de5334ff9d7efa52895f3a947b541bd3d362411eb47c78ff66843",
+      "channels": [
+        "test"
+      ],
+      "products": [
+        "dfb-slim"
+      ],
+      "not_after": "2027-12-31T23:59:59Z"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "description": "What a payload file is. An installer refuses a release containing a type it doesn't know. Add a type here before any release uses it.",
+  "payload_types": [
+    {
+      "id": "raw-bin",
+      "meaning": "A raw image written to the unit's flash as-is, for example an MCU application or bootloader."
+    },
+    {
+      "id": "esp-app-image",
+      "meaning": "An ESP-IDF application image, written through the ESP-IDF OTA API into an inactive app partition."
+    },
+    {
+      "id": "rauc-bundle",
+      "meaning": "A RAUC bundle, installed with RAUC into an inactive slot. RAUC checks its own signature in addition to this release's."
+    }
+  ]
+}

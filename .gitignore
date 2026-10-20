@@ -53,3 +53,14 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Signing and recipient private keys never enter the repository
+*.pem
+*.key
+*.priv
+keys/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

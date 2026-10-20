@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pelco-release:v1:signature",
+  "title": "Pelco release signature file (manifest.sig), format version 1",
+  "type": "object",
+  "required": ["format", "format_version", "signatures"],
+  "properties": {
+    "format": { "const": "pelco-release-signature" },
+    "format_version": { "const": 1 },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["key_id", "alg", "sig"],
+        "properties": {
+          "key_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+          "alg": { "const": "ed25519" },
+          "sig": { "type": "string", "pattern": "^[0-9a-f]{128}$" }
+        }
+      }
+    }
+  }
+}

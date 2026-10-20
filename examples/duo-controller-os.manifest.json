@@ -1,0 +1,36 @@
+{
+  "format": "pelco-release",
+  "format_version": 1,
+  "product": "duo",
+  "component": "duo.controller.os",
+  "version": "3.0.0",
+  "reported_version": "3.0.0",
+  "channel": "release",
+  "hardware": [
+    "qsmp-1510"
+  ],
+  "requires": [
+    {
+      "component": "duo.controller.app",
+      "scope": "unit",
+      "min": "4.0.0",
+      "max_exclusive": "5.0.0"
+    }
+  ],
+  "routes": [
+    "network"
+  ],
+  "payload": [
+    {
+      "name": "duo-controller-os.raucb",
+      "type": "rauc-bundle",
+      "size": 39976960,
+      "sha256": "b6d8502c2f53bd793399b6acd59021083b51697f92fa57f6089014f406848dc1"
+    }
+  ],
+  "build": {
+    "source": "yocto-build-manifest@duo-os-v3.0.0",
+    "commit": "991fef0ac64e9173f19a60c8ff7cd5d60686bdb8",
+    "built_at": "2026-10-19T15:24:00Z"
+  }
+}

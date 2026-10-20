@@ -1,0 +1,11 @@
+{
+  "format": "pelco-release-signature",
+  "format_version": 1,
+  "signatures": [
+    {
+      "key_id": "duo-release-2026",
+      "alg": "ed25519",
+      "sig": "68746b4c60fa604296127d9f4ffc4ce9ad801484be5c4512434a2875df56162259c5dcf32532c407e7600afa99dac50508b313bbd71ff1b088081f27a7936cd2"
+    }
+  ]
+}
