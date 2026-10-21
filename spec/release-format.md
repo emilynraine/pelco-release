@@ -32,6 +32,10 @@ It MUST contain exactly these entries, in this order:
 Every entry MUST be a regular file. Directories, links, extended headers and any other entry are
 not allowed. Entry names match `^[A-Za-z0-9._-]{1,64}$`.
 
+Each entry header MUST have the POSIX magic `ustar\0` and version `00`, type flag `0` or NUL, an
+empty name prefix, a size in octal and a correct checksum. Other header fields are ignored. The
+entries are followed by the end-of-archive marker (two zero blocks); only zero bytes may follow it.
+
 `manifest.json` MUST NOT exceed 65 536 bytes. `manifest.sig` MUST NOT exceed 8 192 bytes.
 
 The manifest and its signature come first so that an installer reading the file as a stream can
@@ -44,6 +48,10 @@ uploaded one by one) MUST apply the same checks to the same bytes.
 
 `manifest.json` is a UTF-8 JSON object. Its schema is `schema/manifest.schema.json`. All binary
 values are lowercase hexadecimal.
+
+`manifest.json` and `manifest.sig` MUST be valid UTF-8 without a byte order mark, and MUST NOT
+repeat a member name within an object. Readers reject a repeated name rather than picking one, so
+two readers can never see different values in the same signed manifest.
 
 | Field | Required | Meaning |
 | --- | --- | --- |
@@ -76,7 +84,8 @@ A requirement is met only when the installer knows the installed version of that
 scope and it falls in range. An unknown version does not meet a requirement.
 
 Installed versions are compared as semver. Turning what a unit reports into a semver version is the
-product's job, defined in its product definition; the format only fixes how the results compare.
+product's job, defined in its product definition; the format only fixes how the results compare. A
+reported version the product can't turn into semver counts as unknown.
 
 ### 3.2 Routes
 
@@ -213,8 +222,8 @@ Every installer and verifier checks a release in this order and stops at the fir
 reporting that result code (`result-codes.json`). Steps that need knowledge of the target (from
 step 6 on) apply only to installers; a verifier such as PelcoHub stops after step 5.
 
-1. **Container.** The release file has the entries required by section 2, within the size limits.
-   → `RELEASE_MALFORMED`
+1. **Container.** The release file starts with `manifest.json` then `manifest.sig`, as section 2
+   requires, within the size limits. → `RELEASE_MALFORMED`
 2. **Signature.** At least one signature in `manifest.sig` is by a key in the keyring and verifies
    over the exact manifest bytes. Nothing in the manifest is trusted before this step passes.
    → `SIGNATURE_MALFORMED`, `KEY_UNKNOWN`, `SIGNATURE_INVALID`
@@ -232,13 +241,19 @@ step 6 on) apply only to installers; a verifier such as PelcoHub stops after ste
 10. **Requirements.** Every entry in `requires` is met. → `REQUIREMENT_NOT_MET`
 11. **Version.** Compared with the version installed on the target: newer passes; equal fails with
     `ALREADY_INSTALLED` unless the caller asked to reinstall; older fails with
-    `DOWNGRADE_NOT_ALLOWED` unless the caller passed the downgrade flag.
+    `DOWNGRADE_NOT_ALLOWED` unless the caller passed the downgrade flag. If the installed version is
+    unknown the step passes, so a unit whose firmware can't report one can still be recovered.
 12. **Payload types.** The installer knows every payload's `type`. → `PAYLOAD_TYPE_UNSUPPORTED`
 13. **Recipient.** If any payload is encrypted, the installer holds a private key for one of the
     `recipients` and unwraps the content key. → `NO_RECIPIENT_KEY`, `KEY_UNWRAP_FAILED`
-14. **Payload.** As each payload is read: its stored size and SHA-256 match; if encrypted, every chunk
-    authenticates and the decrypted size and SHA-256 match.
+14. **Payload.** Each payload's entry follows in manifest order, and after the last one comes the
+    end of the archive (`RELEASE_MALFORMED`). As each payload is read: its stored size and SHA-256
+    match; if encrypted, every chunk authenticates and the decrypted size and SHA-256 match.
     → `PAYLOAD_SIZE_MISMATCH`, `PAYLOAD_HASH_MISMATCH`, `DECRYPT_FAILED`, `PLAIN_HASH_MISMATCH`
+
+    A reader decrypting as it receives may find a bad chunk before the stored hash is complete. A
+    changed encrypted payload can therefore report `DECRYPT_FAILED` or `PAYLOAD_HASH_MISMATCH`;
+    both mean the payload was altered.
 
 ### 7.1 Nothing is activated early
 
@@ -258,7 +273,13 @@ Every party that handles a release checks it as far as it can:
 A host that installs onto a unit that can't check releases itself (for example over a serial
 bootloader) is that unit's installer and runs all steps.
 
-## 8. Ownership
+## 8. Conformance
+
+`vectors/` holds a release file for each case a reader must handle, with the context to check it in
+and the result code it must report. A reader conforms when it reports the expected code for every
+case. `pelco_release/` is the reference implementation the vectors are checked against.
+
+## 9. Ownership
 
 This format and its test cases are owned by `pelco-release`. Product facts (component IDs, hardware
 IDs and how a unit reports them, which routes reach a product, who holds which recipient keys) are

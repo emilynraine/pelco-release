@@ -17,8 +17,8 @@ This repository is **product-free**. It owns the format, never the products.
 | The format spec and JSON Schemas | Component IDs, hardware IDs, routes per product: those are each product's definition |
 | Generic vocabulary: routes, payload types, result codes | How a product transfers or writes an image (Bluetooth protocols, bootloader commands, RAUC) |
 | Test cases every implementation must pass | Choosing what to install, running update jobs, UI |
-| The C reader for devices and controllers (planned) | The Kotlin reader, which lives in pelco-kmp with the Device Library |
-| The release builder and CI signing workflow (planned) | Private keys of any kind |
+| The release builder and Python reference reader | The Kotlin reader, which lives in pelco-kmp with the Device Library |
+| The C reader and CI signing workflow (planned) | Private keys of any kind, other than the published test keys |
 
 A product's update code calls the reader with what only it knows: the target component, the unit's
 hardware ID, the installed versions and the route in use. The reader checks the release and streams
@@ -33,21 +33,66 @@ spec/
   registry/              routes and payload types
   result-codes.json      result codes every implementation reports
 examples/                example manifests, signature and keyring (placeholder hashes and keys)
+pelco_release/           reference implementation and command line: build, sign, pack, verify
+vectors/                 conformance cases: release files, contexts and expected result codes
 tools/
   check_spec.py          checks the schemas, examples and registries
+  check_cli.py           runs the command line end to end
+  make_vectors.py        generates vectors/, or checks it with --check
 ```
 
-Planned: `vectors/` (signed and encrypted test releases with expected results), `tools/` release
-builder, `ci/` reusable signing workflow, `c/` reader library.
+Planned: `ci/` reusable signing workflow, `c/` reader library.
 
-## Checking the spec
+## Building a release
 
 ```bash
-python -m pip install -r tools/requirements.txt
-python tools/check_spec.py
+python -m pip install -r requirements.txt
+
+python -m pelco_release keygen signing duo-test-2026 --out duo-test.key --channel test --product duo
+python -m pelco_release keygen recipient duo-controller-2026 --out duo-controller.key
+python -m pelco_release build release.json --out build/release
+python -m pelco_release sign build/release --key duo-test.key   # or --key-env, for CI secrets
+python -m pelco_release pack build/release --out duo.button.app-2.3.0.prel
+python -m pelco_release verify duo.button.app-2.3.0.prel --keyring keyring.json
 ```
 
-CI runs the same check on every push.
+`keygen` prints the public half: a keyring entry for a signing key, or a `key_id` and
+`public_key` for a recipient key. Keep `.key` files out of git; `.gitignore` already excludes them.
+
+`build` takes a build spec: every manifest field except `payload` and `recipients`, the payload
+files, and the recipients' public keys. `build.built_at` is filled in if absent.
+
+```json
+{
+  "manifest": {
+    "format": "pelco-release", "format_version": 1,
+    "product": "duo", "component": "duo.button.app",
+    "version": "2.3.0", "reported_version": "2.3.0", "channel": "release",
+    "hardware": ["duo-button-v1"], "routes": ["relay", "usb", "ble"],
+    "build": { "source": "guardian-duo@v2.3.0", "commit": "5afb83f7c5637d0e396f3aa99ed141dd4afd40b9" }
+  },
+  "payload": [
+    { "name": "duo.bin", "type": "raw-bin", "file": "out/duo.bin", "encrypt": true, "chunk_size": 4096 }
+  ],
+  "recipients": [
+    { "key_id": "duo-controller-2026", "public_key": "…64 hex characters…" }
+  ]
+}
+```
+
+`verify` without `--context` runs the verifier's checks (steps 1–5). With a context file, in the
+form described in `vectors/README.md`, and `--recipient-key` for each key held, it runs as an
+installer. It exits 0 only for `OK`.
+
+## Checking
+
+```bash
+python tools/check_spec.py
+python tools/check_cli.py
+python tools/make_vectors.py --check
+```
+
+CI runs all three on every push.
 
 ## Versioning
 

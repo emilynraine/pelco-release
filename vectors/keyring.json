@@ -1,0 +1,64 @@
+{
+  "format": "pelco-release-keyring",
+  "format_version": 1,
+  "keys": [
+    {
+      "key_id": "vec-release",
+      "alg": "ed25519",
+      "public_key": "4f56587fe0ff0117b45ddb70207e00e9ee6df82646ea3dbfc32caf3941e15afa",
+      "channels": [
+        "release"
+      ],
+      "products": [
+        "example"
+      ]
+    },
+    {
+      "key_id": "vec-test",
+      "alg": "ed25519",
+      "public_key": "78c10170174ed1489ea9c94a13e6bb4f45b772cb54e484d0d5baa25e1717e751",
+      "channels": [
+        "test"
+      ],
+      "products": [
+        "example"
+      ]
+    },
+    {
+      "key_id": "vec-other-product",
+      "alg": "ed25519",
+      "public_key": "5617f8a35fa921b97d6efe1a86388cc2b4c542b23cc32adb9556cc1a9fcd5be2",
+      "channels": [
+        "release",
+        "test"
+      ],
+      "products": [
+        "other"
+      ]
+    },
+    {
+      "key_id": "vec-until-build",
+      "alg": "ed25519",
+      "public_key": "75f534ba5327921dc331469260412d1093ebe06532620727faca2d8ab9830e64",
+      "channels": [
+        "release"
+      ],
+      "products": [
+        "example"
+      ],
+      "not_after": "2026-10-19T15:24:00.000Z"
+    },
+    {
+      "key_id": "vec-expired",
+      "alg": "ed25519",
+      "public_key": "7ecabc41356b6a6989ee9985d46f783a6818c7833e07bff54ccf0b6e6eba1e75",
+      "channels": [
+        "release"
+      ],
+      "products": [
+        "example"
+      ],
+      "not_after": "2026-10-19T15:23:59.999Z"
+    }
+  ]
+}

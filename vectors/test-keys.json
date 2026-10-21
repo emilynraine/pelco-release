@@ -1,0 +1,59 @@
+{
+  "description": "TEST KEYS ONLY. Published so anyone can rebuild the vectors; never trust them in a product.",
+  "keys": [
+    {
+      "key_id": "vec-release",
+      "alg": "ed25519",
+      "private_key": "982b43f77491fdf218c2ec2a426129e6cd05e71fe4e15ce540c09c4a619e899a",
+      "public_key": "4f56587fe0ff0117b45ddb70207e00e9ee6df82646ea3dbfc32caf3941e15afa"
+    },
+    {
+      "key_id": "vec-test",
+      "alg": "ed25519",
+      "private_key": "18134c378e7a46d9743999963686633e5b209cb1af4d85cd8aca35a4864e266e",
+      "public_key": "78c10170174ed1489ea9c94a13e6bb4f45b772cb54e484d0d5baa25e1717e751"
+    },
+    {
+      "key_id": "vec-other-product",
+      "alg": "ed25519",
+      "private_key": "313f1277e48e3c55d5287cd3e6bfead80437b1546ad810d1debab00fa5ffc749",
+      "public_key": "5617f8a35fa921b97d6efe1a86388cc2b4c542b23cc32adb9556cc1a9fcd5be2"
+    },
+    {
+      "key_id": "vec-until-build",
+      "alg": "ed25519",
+      "private_key": "3b8856d10230e800292b04e6f815b8bed9de3faeb749db60554dd53318bfd7aa",
+      "public_key": "75f534ba5327921dc331469260412d1093ebe06532620727faca2d8ab9830e64"
+    },
+    {
+      "key_id": "vec-expired",
+      "alg": "ed25519",
+      "private_key": "570d021976d2a82b8cc65eccb65f583dfcaf8781c13532c75c19fea32db11cd1",
+      "public_key": "7ecabc41356b6a6989ee9985d46f783a6818c7833e07bff54ccf0b6e6eba1e75"
+    },
+    {
+      "key_id": "vec-unknown",
+      "alg": "ed25519",
+      "private_key": "8266993bbf16b1aad8ee9a151ddde2967150d20ac318a46704b2bdd35c2650c5",
+      "public_key": "6a49929af793cb7d69b8aebc7f06455ae78118f3c05451437bbaf977b20b5b1b"
+    },
+    {
+      "key_id": "vec-device",
+      "alg": "x25519",
+      "private_key": "c6ddda5473b9f5899bd8ae4259702e291d9ccd493d19e59b5d13daca7eba0c61",
+      "public_key": "7da0ba64e8e0db0dff6f8442a2773db41b2e9c040bd50c625718e0f9a59acc2b"
+    },
+    {
+      "key_id": "vec-host",
+      "alg": "x25519",
+      "private_key": "a7b955c9472cd1d16103a996ad5ab95e7d8e1d0ce94db4a7dacb4401705fd9bc",
+      "public_key": "227a4b9799045d9bd22b67bc31b7c532a6229ba9a04095065a20e07a404f8034"
+    },
+    {
+      "key_id": "vec-other-device",
+      "alg": "x25519",
+      "private_key": "b9f2cb1dbdfabbaab121c5c05b6fec78e2b8b5bea02e81d7a9653c32dd0b93c7",
+      "public_key": "2b4fe22f751456f7c91f623a02b4a790815bcb860a41a9f560b967aca7dffd74"
+    }
+  ]
+}

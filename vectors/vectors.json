@@ -1,0 +1,2701 @@
+{
+  "format": "pelco-release-vectors",
+  "format_version": 1,
+  "keyring": "keyring.json",
+  "test_keys": "test-keys.json",
+  "cases": [
+    {
+      "name": "ok-encrypted",
+      "file": "ok-encrypted.prel",
+      "expected": "OK",
+      "description": "Encrypted payload in five chunks, the last one short.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-plain",
+      "file": "ok-plain.prel",
+      "expected": "OK",
+      "description": "Unencrypted payload; the manifest has no recipients.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-exact-chunks",
+      "file": "ok-exact-chunks.prel",
+      "expected": "OK",
+      "description": "Encrypted payload that fills its last chunk exactly.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-single-chunk",
+      "file": "ok-single-chunk.prel",
+      "expected": "OK",
+      "description": "Encrypted payload smaller than one chunk.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-three-payloads",
+      "file": "ok-three-payloads.prel",
+      "expected": "OK",
+      "description": "Three payloads: two encrypted with one content key and different nonce prefixes, one plain.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-one-known-signer",
+      "file": "ok-one-known-signer.prel",
+      "expected": "OK",
+      "description": "Signed by a key the keyring doesn't know and by one it does.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-one-of-two-verifies",
+      "file": "ok-one-of-two-verifies.prel",
+      "expected": "OK",
+      "description": "Two known signatures, the first doesn't verify; one verifying signature is enough.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-unknown-fields",
+      "file": "ok-unknown-fields.prel",
+      "expected": "OK",
+      "description": "Unknown fields at the top level, in a payload and in build are ignored.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-unknown-route",
+      "file": "ok-unknown-route.prel",
+      "expected": "OK",
+      "description": "A route the installer doesn't know is ignored.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-test-channel",
+      "file": "ok-test-channel.prel",
+      "expected": "OK",
+      "description": "Test release, installer configured for testing.",
+      "context": {
+        "checks": "installer",
+        "accept_test": true,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-reinstall",
+      "file": "ok-reinstall.prel",
+      "expected": "OK",
+      "description": "Same version installed; caller asked to reinstall.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "2.0.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": true,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-downgrade-allowed",
+      "file": "ok-downgrade-allowed.prel",
+      "expected": "OK",
+      "description": "Newer version installed; caller passed the downgrade flag.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "2.1.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": true
+      }
+    },
+    {
+      "name": "ok-installed-version-unknown",
+      "file": "ok-installed-version-unknown.prel",
+      "expected": "OK",
+      "description": "The target's installed version is unknown, so the version step passes.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-newer-than-prerelease",
+      "file": "ok-newer-than-prerelease.prel",
+      "expected": "OK",
+      "description": "2.0.0 is newer than the installed 2.0.0-rc.1.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "2.0.0-rc.1",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-numeric-ordering",
+      "file": "ok-numeric-ordering.prel",
+      "expected": "OK",
+      "description": "2.10.0 is newer than the installed 2.9.0: versions compare numerically.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "2.9.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-requirement-edges",
+      "file": "ok-requirement-edges.prel",
+      "expected": "OK",
+      "description": "Requirements at their edges: min is inclusive, and 4.0.0-rc.1 is below max_exclusive 4.0.0.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.0.0"
+          },
+          "system": {
+            "example.parent.app": "4.0.0-rc.1"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-key-until-build",
+      "file": "ok-key-until-build.prel",
+      "expected": "OK",
+      "description": "Key not_after equals build.built_at, written with a fraction; not_after is inclusive.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-verifier",
+      "file": "ok-verifier.prel",
+      "expected": "OK",
+      "description": "A verifier stops after step 5, so the target, channel and recipient keys don't matter.",
+      "context": {
+        "checks": "verifier",
+        "accept_test": false,
+        "component": "example.unit.boot",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-host",
+      "file": "ok-host.prel",
+      "expected": "OK",
+      "description": "A host stops after step 12, so it needs no recipient key.",
+      "context": {
+        "checks": "host",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-archive-padding",
+      "file": "ok-archive-padding.prel",
+      "expected": "OK",
+      "description": "Zero blocks after the end-of-archive marker, as tar pads to its record size.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-empty",
+      "file": "malformed-empty.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "Empty file.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-signature-first",
+      "file": "malformed-signature-first.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "manifest.sig comes before manifest.json.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-no-signature",
+      "file": "malformed-no-signature.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "No manifest.sig.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-manifest-too-large",
+      "file": "malformed-manifest-too-large.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "manifest.json is over 65 536 bytes, though validly signed.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-signature-too-large",
+      "file": "malformed-signature-too-large.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "manifest.sig is over 8 192 bytes.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-payload-missing",
+      "file": "malformed-payload-missing.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "The payload entry is missing.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-payload-renamed",
+      "file": "malformed-payload-renamed.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "The payload entry has a different name from the manifest's.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-payloads-reordered",
+      "file": "malformed-payloads-reordered.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "Two payload entries in a different order from the manifest's.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-extra-entry",
+      "file": "malformed-extra-entry.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "An extra entry after the last payload.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-link-entry",
+      "file": "malformed-link-entry.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "The payload entry is a symbolic link, not a regular file.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-pax-header",
+      "file": "malformed-pax-header.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "A pax extended header before manifest.json.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-gnu-magic",
+      "file": "malformed-gnu-magic.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "manifest.json's header has GNU tar's magic, not POSIX ustar.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-bad-checksum",
+      "file": "malformed-bad-checksum.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "manifest.json's header checksum is wrong.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-truncated",
+      "file": "malformed-truncated.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "The file ends inside the payload.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-no-end-marker",
+      "file": "malformed-no-end-marker.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "No end-of-archive marker.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "malformed-data-after-end",
+      "file": "malformed-data-after-end.prel",
+      "expected": "RELEASE_MALFORMED",
+      "description": "Non-zero data after the end-of-archive marker.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-not-json",
+      "file": "signature-not-json.prel",
+      "expected": "SIGNATURE_MALFORMED",
+      "description": "manifest.sig isn't JSON.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-wrong-format",
+      "file": "signature-wrong-format.prel",
+      "expected": "SIGNATURE_MALFORMED",
+      "description": "manifest.sig has the wrong format.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-short",
+      "file": "signature-short.prel",
+      "expected": "SIGNATURE_MALFORMED",
+      "description": "A signature is 63 bytes.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-empty",
+      "file": "signature-empty.prel",
+      "expected": "SIGNATURE_MALFORMED",
+      "description": "No signatures.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-duplicate-member",
+      "file": "signature-duplicate-member.prel",
+      "expected": "SIGNATURE_MALFORMED",
+      "description": "manifest.sig has a member name twice.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "key-unknown",
+      "file": "key-unknown.prel",
+      "expected": "KEY_UNKNOWN",
+      "description": "Signed only by a key the keyring doesn't know.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-manifest-changed",
+      "file": "signature-manifest-changed.prel",
+      "expected": "SIGNATURE_INVALID",
+      "description": "The version was changed after signing.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-whitespace-changed",
+      "file": "signature-whitespace-changed.prel",
+      "expected": "SIGNATURE_INVALID",
+      "description": "A space was added after signing: the manifest is never canonicalised.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "signature-wrong-key",
+      "file": "signature-wrong-key.prel",
+      "expected": "SIGNATURE_INVALID",
+      "description": "Signed by an unknown key but labelled with a known key's ID.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "format-version-2",
+      "file": "format-version-2.prel",
+      "expected": "FORMAT_UNSUPPORTED",
+      "description": "format_version 2.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "format-version-string",
+      "file": "format-version-string.prel",
+      "expected": "FORMAT_UNSUPPORTED",
+      "description": "format_version is the string \"1\".",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "format-other",
+      "file": "format-other.prel",
+      "expected": "FORMAT_UNSUPPORTED",
+      "description": "format isn't \"pelco-release\".",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-not-json",
+      "file": "manifest-not-json.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "manifest.json isn't JSON.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-not-object",
+      "file": "manifest-not-object.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "manifest.json is a JSON array.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-bom",
+      "file": "manifest-bom.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "manifest.json starts with a UTF-8 byte order mark.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-bad-utf8",
+      "file": "manifest-bad-utf8.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "manifest.json isn't valid UTF-8.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-duplicate-member",
+      "file": "manifest-duplicate-member.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "\"version\" appears twice; readers must not pick one.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-release-prerelease",
+      "file": "manifest-release-prerelease.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "A release-channel version with a pre-release part.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-missing-routes",
+      "file": "manifest-missing-routes.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "No routes.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-component-not-product",
+      "file": "manifest-component-not-product.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "The component doesn't start with the product.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-duplicate-payload-name",
+      "file": "manifest-duplicate-payload-name.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "Two payloads with the same name.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-duplicate-nonce-prefix",
+      "file": "manifest-duplicate-nonce-prefix.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "Two encrypted payloads with the same nonce prefix.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-encrypted-size-wrong",
+      "file": "manifest-encrypted-size-wrong.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "An encrypted payload's size doesn't match its plain_size and chunk_size.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-duplicate-recipient",
+      "file": "manifest-duplicate-recipient.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "Two recipients with the same key ID.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-no-recipients",
+      "file": "manifest-no-recipients.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "An encrypted payload and no recipients.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "key-wrong-channel",
+      "file": "key-wrong-channel.prel",
+      "expected": "KEY_NOT_PERMITTED",
+      "description": "A test-only key signed a release-channel release.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "key-wrong-product",
+      "file": "key-wrong-product.prel",
+      "expected": "KEY_NOT_PERMITTED",
+      "description": "The key may only sign another product.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "key-expired",
+      "file": "key-expired.prel",
+      "expected": "KEY_NOT_PERMITTED",
+      "description": "The key's not_after is a millisecond before build.built_at.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "key-permitted-signature-invalid",
+      "file": "key-permitted-signature-invalid.prel",
+      "expected": "KEY_NOT_PERMITTED",
+      "description": "The permitted key's signature doesn't verify; the verifying one isn't permitted.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "channel-test-not-accepted",
+      "file": "channel-test-not-accepted.prel",
+      "expected": "CHANNEL_NOT_ALLOWED",
+      "description": "Test release, installer not configured for testing.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "wrong-component",
+      "file": "wrong-component.prel",
+      "expected": "WRONG_COMPONENT",
+      "description": "The installer is updating example.unit.boot.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.boot",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "hardware-incompatible",
+      "file": "hardware-incompatible.prel",
+      "expected": "HARDWARE_INCOMPATIBLE",
+      "description": "The unit's hardware ID isn't listed.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-b",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "route-not-allowed",
+      "file": "route-not-allowed.prel",
+      "expected": "ROUTE_NOT_ALLOWED",
+      "description": "Installing over ble, which the release doesn't list.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "ble",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "requirement-below-min",
+      "file": "requirement-below-min.prel",
+      "expected": "REQUIREMENT_NOT_MET",
+      "description": "Unit requirement below min.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "0.9.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "requirement-prerelease-below-min",
+      "file": "requirement-prerelease-below-min.prel",
+      "expected": "REQUIREMENT_NOT_MET",
+      "description": "Unit requirement at 1.0.0-rc.1, which is below min 1.0.0.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.0.0-rc.1"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "requirement-at-max",
+      "file": "requirement-at-max.prel",
+      "expected": "REQUIREMENT_NOT_MET",
+      "description": "System requirement at max_exclusive.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "4.0.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "requirement-unknown",
+      "file": "requirement-unknown.prel",
+      "expected": "REQUIREMENT_NOT_MET",
+      "description": "System requirement's version unknown.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {}
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "requirement-wrong-scope",
+      "file": "requirement-wrong-scope.prel",
+      "expected": "REQUIREMENT_NOT_MET",
+      "description": "The unit requirement is installed elsewhere in the system, not on the unit.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0",
+            "example.unit.boot": "1.2.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "already-installed",
+      "file": "already-installed.prel",
+      "expected": "ALREADY_INSTALLED",
+      "description": "Same version installed.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "2.0.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "downgrade",
+      "file": "downgrade.prel",
+      "expected": "DOWNGRADE_NOT_ALLOWED",
+      "description": "Newer version installed.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "2.1.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "downgrade-numeric",
+      "file": "downgrade-numeric.prel",
+      "expected": "DOWNGRADE_NOT_ALLOWED",
+      "description": "10.0.0 installed is newer than 2.0.0: versions compare numerically.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "10.0.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "payload-type-unsupported",
+      "file": "payload-type-unsupported.prel",
+      "expected": "PAYLOAD_TYPE_UNSUPPORTED",
+      "description": "A payload type the installer doesn't know.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "no-recipient-key",
+      "file": "no-recipient-key.prel",
+      "expected": "NO_RECIPIENT_KEY",
+      "description": "The installer holds no key the release lists.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-other-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "unwrap-tampered",
+      "file": "unwrap-tampered.prel",
+      "expected": "KEY_UNWRAP_FAILED",
+      "description": "The wrapped key was changed before signing.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "unwrap-wrong-recipient",
+      "file": "unwrap-wrong-recipient.prel",
+      "expected": "KEY_UNWRAP_FAILED",
+      "description": "The vec-device entry holds the key wrapped for vec-host.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "unwrap-zero-point",
+      "file": "unwrap-zero-point.prel",
+      "expected": "KEY_UNWRAP_FAILED",
+      "description": "ephemeral_pub is all zeros, giving an all-zero shared secret.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "size-longer",
+      "file": "size-longer.prel",
+      "expected": "PAYLOAD_SIZE_MISMATCH",
+      "description": "The payload entry is a byte longer than the manifest says.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "size-shorter",
+      "file": "size-shorter.prel",
+      "expected": "PAYLOAD_SIZE_MISMATCH",
+      "description": "The payload entry is a byte shorter than the manifest says.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "hash-mismatch",
+      "file": "hash-mismatch.prel",
+      "expected": "PAYLOAD_HASH_MISMATCH",
+      "description": "One byte of an unencrypted payload changed.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "decrypt-chunk-changed",
+      "file": "decrypt-chunk-changed.prel",
+      "expected": "DECRYPT_FAILED",
+      "description": "One byte of chunk 1 changed, with sha256 updated to match.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "decrypt-chunks-swapped",
+      "file": "decrypt-chunks-swapped.prel",
+      "expected": "DECRYPT_FAILED",
+      "description": "Chunks 0 and 1 swapped, with sha256 updated to match.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "decrypt-truncated",
+      "file": "decrypt-truncated.prel",
+      "expected": "DECRYPT_FAILED",
+      "description": "The last chunk removed, with sizes and hashes updated: the new last chunk isn't marked last.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "decrypt-wrong-content-key",
+      "file": "decrypt-wrong-content-key.prel",
+      "expected": "DECRYPT_FAILED",
+      "description": "The recipients unwrap a different release's content key.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "plain-hash-mismatch",
+      "file": "plain-hash-mismatch.prel",
+      "expected": "PLAIN_HASH_MISMATCH",
+      "description": "plain_sha256 doesn't match the decrypted image.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    }
+  ]
+}
