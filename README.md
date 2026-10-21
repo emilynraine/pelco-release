@@ -33,6 +33,7 @@ spec/
   schema/                JSON Schemas: manifest, manifest.sig, keyring
   registry/              routes and payload types
   result-codes.json      result codes every implementation reports
+docs/key-management.md   who holds the signing and recipient keys, rotation, and a leaked key
 examples/                example manifests, signature and keyring (placeholder hashes and keys)
 pelco_release/           reference implementation and command line: build, sign, pack, verify
 c/                       the C reader library and its conformance runner (see c/README.md)
@@ -121,6 +122,7 @@ in a GitHub environment of the product's repository: one environment per signing
 `firmware-test` for the test key and `firmware-release` for the release key. Give the release
 environment required reviewers and restrict it to protected branches or tags, so a release-channel
 signature always needs a person's approval. Nothing outside that environment ever sees the key.
+[docs/key-management.md](docs/key-management.md) covers custody, rotation and a leaked key.
 
 ## Checking
 
