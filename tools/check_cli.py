@@ -46,6 +46,10 @@ with tempfile.TemporaryDirectory() as tmp:
     cli("sign", "release", "--key-env", "SIGNING_KEY", cwd=d,
         env={"SIGNING_KEY": (d / "signing.key").read_text()})
     cli("pack", "release", "--out", "demo.prel", cwd=d)
+    (d / "out").mkdir()
+    cli("pack", "release", "--out", "out", cwd=d)
+    if not (d / "out" / "demo.unit.app-1.0.0-rc.1.prel").exists():
+        sys.exit("pack into a directory didn't name the file <component>-<version>.prel")
     cli("verify", "demo.prel", "--keyring", "keyring.json", cwd=d)
     cli("verify", "demo.prel", "--keyring", "keyring.json", "--context", "context.json",
         "--recipient-key", "device.key", cwd=d)

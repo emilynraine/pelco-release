@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   spec:
     runs-on: ubuntu-latest
@@ -16,3 +19,32 @@ jobs:
       - run: python tools/check_spec.py
       - run: python tools/check_cli.py
       - run: python tools/make_vectors.py --check
+
+  c:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: sudo apt-get install -y libssl-dev
+      - name: Build
+        run: |
+          cmake -S c -B c/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS=-Werror
+          cmake --build c/build
+      - name: Vectors
+        run: ctest --test-dir c/build --output-on-failure
+      - name: Agrees with the reference on mutated releases
+        run: |
+          python tools/differential.py --runner c/build/run_vectors --seed 1
+          python tools/differential.py --runner c/build/run_vectors --seed 2
+      - name: Build with sanitizers
+        run: |
+          cmake -S c -B c/build-san -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_C_FLAGS="-Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer"
+          cmake --build c/build-san
+      - name: Vectors and mutated releases, with sanitizers
+        run: |
+          ctest --test-dir c/build-san --output-on-failure
+          python tools/differential.py --runner c/build-san/run_vectors --seed 3

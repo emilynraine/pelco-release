@@ -64,3 +64,6 @@ keys/
 __pycache__/
 *.pyc
 .venv/
+
+# C builds
+c/build*/

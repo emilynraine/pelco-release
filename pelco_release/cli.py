@@ -73,11 +73,14 @@ def _sign(args):
 def _pack(args):
     directory = Path(args.dir)
     manifest_bytes = (directory / "manifest.json").read_bytes()
-    names = [p["name"] for p in parse_json(manifest_bytes)["payload"]]
+    manifest = parse_json(manifest_bytes)
     data = builder.pack(manifest_bytes, (directory / "manifest.sig").read_bytes(),
-                        [(n, (directory / n).read_bytes()) for n in names])
-    Path(args.out).write_bytes(data)
-    print(f"wrote {args.out} ({len(data)} bytes)")
+                        [(p["name"], (directory / p["name"]).read_bytes()) for p in manifest["payload"]])
+    out = Path(args.out)
+    if out.is_dir():
+        out = out / f"{manifest['component']}-{manifest['version']}.prel"
+    out.write_bytes(data)
+    print(f"wrote {out} ({len(data)} bytes)")
 
 
 def _verify(args):
@@ -119,7 +122,7 @@ def main(argv=None):
 
     p = commands.add_parser("pack", help="pack a signed release directory into a .prel file")
     p.add_argument("dir")
-    p.add_argument("--out", required=True)
+    p.add_argument("--out", required=True, help="file, or directory to write <component>-<version>.prel in")
     p.set_defaults(run=_pack)
 
     p = commands.add_parser("verify", help="check a .prel file and print its result code")

@@ -1,0 +1,87 @@
+name: Sign release
+
+# Reusable. A product repository builds its firmware, uploads the payload files and a build spec as an
+# artifact, then calls this workflow to build, sign and pack the release. The signing key never
+# leaves the GitHub environment named by the caller; see README.md "Signing in CI".
+on:
+  workflow_call:
+    inputs:
+      artifact:
+        description: Artifact holding the build spec and the payload files it names.
+        required: true
+        type: string
+      spec:
+        description: Path of the build spec inside the artifact.
+        required: true
+        type: string
+      environment:
+        description: GitHub environment holding PELCO_RELEASE_SIGNING_KEY. Protect release-channel environments with required reviewers.
+        required: true
+        type: string
+      pelco-release-ref:
+        description: Tag of pelco-release to build with; the same tag the workflow is called at.
+        required: true
+        type: string
+      keyring:
+        description: Path of a keyring inside the artifact; if given, the signed release is checked against it.
+        required: false
+        type: string
+        default: ""
+    outputs:
+      release-artifact:
+        description: Name of the artifact holding the .prel file.
+        value: ${{ jobs.sign.outputs.release-artifact }}
+    secrets:
+      PELCO_RELEASE_SIGNING_KEY:
+        description: The private key file's contents. Usually an environment secret, which needs no passing.
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      release-artifact: ${{ steps.pack.outputs.artifact }}
+    env:
+      PYTHONPATH: ${{ github.workspace }}/pelco-release
+      SPEC: input/${{ inputs.spec }}
+      KEYRING: ${{ inputs.keyring }}
+      ARTIFACT: ${{ inputs.artifact }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: emilynraine/pelco-release
+          ref: ${{ inputs.pelco-release-ref }}
+          path: pelco-release
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact }}
+          path: input
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r pelco-release/requirements.txt
+      - name: Build
+        run: python -m pelco_release build "$SPEC" --out release
+      - name: Sign
+        env:
+          PELCO_RELEASE_SIGNING_KEY: ${{ secrets.PELCO_RELEASE_SIGNING_KEY }}
+        run: python -m pelco_release sign release --key-env PELCO_RELEASE_SIGNING_KEY
+      - name: Pack
+        id: pack
+        run: |
+          mkdir out
+          python -m pelco_release pack release --out out
+          echo "artifact=$ARTIFACT-release" >> "$GITHUB_OUTPUT"
+      - name: Verify
+        if: inputs.keyring != ''
+        run: python -m pelco_release verify out/*.prel --keyring "input/$KEYRING"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.pack.outputs.artifact }}
+          path: out/*.prel
+          if-no-files-found: error
