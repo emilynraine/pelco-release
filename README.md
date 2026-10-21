@@ -108,7 +108,7 @@ jobs:
 
   release:
     needs: firmware
-    uses: emilynraine/pelco-release/.github/workflows/sign-release.yml@v0.1.0
+    uses: PelcoDev/pelco-release/.github/workflows/sign-release.yml@v0.1.0
     with:
       artifact: duo-button-app
       spec: release.json
@@ -137,7 +137,8 @@ CI runs all of these on every push, and the C checks again under AddressSanitize
 
 ## Versioning
 
-- The repository is tagged with semver. Consumers pin a tag.
+- The repository is tagged with semver: `version.txt` holds the version, and each release is tagged
+  `v` plus that version. Consumers pin a tag. CI fails a tag that doesn't match `version.txt`.
 - The manifest's `format_version` is separate: it changes only when a reader must understand
   something new to install safely. A library fix is a new tag, not a new format version.
 - Result codes and registry IDs are never renumbered, renamed or reused.

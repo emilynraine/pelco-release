@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: emilynraine/pelco-release
+          repository: PelcoDev/pelco-release
           ref: ${{ inputs.pelco-release-ref }}
           path: pelco-release
           persist-credentials: false

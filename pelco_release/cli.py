@@ -6,7 +6,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import builder, crypto, verifier
+from . import __version__, builder, crypto, verifier
 from .codes import NUMBERS
 from .manifest import dumps, parse_json, problems
 
@@ -98,6 +98,7 @@ def _verify(args):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="pelco-release")
+    parser.add_argument("--version", action="version", version=f"pelco-release {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
 
     p = commands.add_parser("keygen", help="create a signing or recipient key pair")
