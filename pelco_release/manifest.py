@@ -1,15 +1,27 @@
 """Strict JSON parsing and the manifest rules of spec sections 3 to 5."""
 import json
+import re
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, ValidationError, validators
 
 from .codes import SPEC
 from .crypto import encrypted_size
 
 
+def _pattern(validator, pattern, instance, schema):
+    # Python's `$` also matches before a final newline; a pattern's `$` must mean the end of the string.
+    if pattern.endswith("$"):
+        pattern = pattern[:-1] + r"\Z"
+    if validator.is_type(instance, "string") and not re.search(pattern, instance):
+        yield ValidationError(f"{instance!r} does not match {pattern!r}")
+
+
+_Validator = validators.extend(Draft202012Validator, {"pattern": _pattern})
+
+
 def _validator(name):
     with open(SPEC / "schema" / f"{name}.schema.json", encoding="utf-8") as f:
-        return Draft202012Validator(json.load(f))
+        return _Validator(json.load(f))
 
 
 MANIFEST_SCHEMA = _validator("manifest")
@@ -28,10 +40,48 @@ def _no_constant(name):
     raise ValueError(f"{name} isn't JSON")
 
 
+class FloatLiteral:
+    """A number written with a fraction or exponent: never equal to an integer, so `1.0` is not `1`."""
+    __slots__ = ("text",)
+
+    def __init__(self, text):
+        self.text = text
+
+
+MAX_DEPTH = 32
+MAX_VALUES = 4096
+
+
+def _check_limits(doc):
+    """At most MAX_VALUES values nested at most MAX_DEPTH deep, and no unpaired surrogates."""
+    count = 0
+    stack = [(doc, 1)]
+    while stack:
+        value, depth = stack.pop()
+        count += 1
+        if count > MAX_VALUES:
+            raise ValueError(f"more than {MAX_VALUES} values")
+        if depth > MAX_DEPTH:
+            raise ValueError(f"nested more than {MAX_DEPTH} deep")
+        if isinstance(value, dict):
+            for k, v in value.items():
+                k.encode("utf-8")
+                stack.append((v, depth + 1))
+        elif isinstance(value, list):
+            stack.extend((v, depth + 1) for v in value)
+        elif isinstance(value, str):
+            value.encode("utf-8")
+
+
 def parse_json(data):
-    """UTF-8 without a BOM, no duplicate member names, no NaN or Infinity. ValueError otherwise."""
-    return json.loads(data.decode("utf-8"), object_pairs_hook=_no_duplicates,
-                      parse_constant=_no_constant)
+    """Strict JSON as spec section 3 requires. ValueError otherwise."""
+    try:
+        doc = json.loads(data.decode("utf-8"), object_pairs_hook=_no_duplicates,
+                         parse_constant=_no_constant, parse_float=FloatLiteral)
+    except RecursionError:
+        raise ValueError(f"nested more than {MAX_DEPTH} deep") from None
+    _check_limits(doc)
+    return doc
 
 
 def dumps(doc):

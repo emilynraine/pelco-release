@@ -76,8 +76,10 @@ def check(stream, keyring, ctx, writer=None):
     """Checks the release read from `stream`.
 
     `writer`, if given, receives each payload's decrypted bytes: begin(payload), write(bytes), then
-    commit() once every check has passed or abort() on any failure.
+    commit() once every check has passed or abort() on any failure. Only an installer writes.
     """
+    if ctx.checks != INSTALLER:
+        writer = None
     try:
         manifest = _check(stream, keyring, ctx, writer)
     except Rejected as r:

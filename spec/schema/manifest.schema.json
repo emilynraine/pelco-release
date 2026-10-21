@@ -127,10 +127,10 @@
           "not": { "enum": ["manifest.json", "manifest.sig"] }
         },
         "type": { "$ref": "#/$defs/token" },
-        "size": { "type": "integer", "minimum": 1 },
+        "size": { "type": "integer", "minimum": 1, "maximum": 8589934591 },
         "sha256": { "$ref": "#/$defs/sha256" },
         "encryption": { "$ref": "#/$defs/encryption" },
-        "plain_size": { "type": "integer", "minimum": 1 },
+        "plain_size": { "type": "integer", "minimum": 1, "maximum": 8589934591 },
         "plain_sha256": { "$ref": "#/$defs/sha256" }
       },
       "if": { "required": ["encryption"] },

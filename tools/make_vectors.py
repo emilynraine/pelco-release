@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT))
 
 from pelco_release import builder, container, crypto, verifier  # noqa: E402
 from pelco_release.codes import NUMBERS  # noqa: E402
-from pelco_release.manifest import dumps  # noqa: E402
+from pelco_release.manifest import MAX_DEPTH, MAX_VALUES, dumps, parse_json  # noqa: E402
 
 OUT = ROOT / "vectors"
 BUILT_AT = "2026-10-19T15:24:00Z"
@@ -131,6 +131,31 @@ def with_header(data, offset, change):
     return data[:offset] + bytes(h) + data[offset + container.BLOCK:]
 
 
+def add_member(manifest_bytes, member):
+    """The manifest with `member` added as its first member, written as given."""
+    return manifest_bytes.replace(b"{\n", b"{\n  " + member + b",\n", 1)
+
+
+def at_limits(manifest_bytes, extra_depth=0, extra_values=0):
+    """The manifest with unknown fields that bring it to exactly the JSON limits, plus any extra."""
+    base = parse_json(manifest_bytes)
+    nested = 0
+    for _ in range(MAX_DEPTH - 2 + extra_depth):
+        nested = [nested]
+    base_count = 1 + sum(1 for _ in _values(base))
+    filler = MAX_VALUES - base_count - 1 - (MAX_DEPTH - 1 + extra_depth) + extra_values
+    member = (b'"future_deep": ' + json.dumps(nested, separators=(",", ":")).encode()
+              + b', "future_filler": ' + json.dumps([0] * filler, separators=(",", ":")).encode())
+    return add_member(manifest_bytes, member)
+
+
+def _values(doc):
+    children = doc.values() if isinstance(doc, dict) else doc if isinstance(doc, list) else []
+    for child in children:
+        yield child
+        yield from _values(child)
+
+
 def flip(data, index):
     return data[:index] + bytes([data[index] ^ 0x01]) + data[index + 1:]
 
@@ -196,6 +221,23 @@ def ok_unknown_fields(rng):
     manifest["payload"][0]["future_field"] = True
     manifest["build"]["future_field"] = "x"
     return signed(manifest, entries)
+
+
+@case("OK", "Strings and member names written with escapes are compared after unescaping.")
+def ok_escaped_strings(rng):
+    return with_manifest_bytes(rng, lambda b: b
+                               .replace(b'"product": "example"', rb'"product": "\u0065xample"', 1)
+                               .replace(b'"channel"', rb'"\u0063hannel"', 1))
+
+
+@case("OK", "A number with a fraction and exponent in an unknown field.")
+def ok_fraction_in_unknown_field(rng):
+    return with_manifest_bytes(rng, lambda b: add_member(b, b'"future_field": -1.5e3'))
+
+
+@case("OK", "Exactly 4 096 values, nested exactly 32 deep.")
+def ok_json_limits(rng):
+    return with_manifest_bytes(rng, lambda b: at_limits(b))
 
 
 @case("OK", "A route the installer doesn't know is ignored.")
@@ -460,6 +502,11 @@ def format_version_string(rng):
     return signed(*make(rng, fields={"format_version": "1"}))
 
 
+@case("FORMAT_UNSUPPORTED", "format_version is written 1.0, which isn't the integer 1.")
+def format_version_fraction(rng):
+    return with_manifest_bytes(rng, lambda b: b.replace(b'"format_version": 1,', b'"format_version": 1.0,', 1))
+
+
 @case("FORMAT_UNSUPPORTED", "format isn't \"pelco-release\".")
 def format_other(rng):
     return signed(*make(rng, fields={"format": "other-release"}))
@@ -511,6 +558,11 @@ def manifest_missing_routes(rng):
     return signed(manifest, entries)
 
 
+@case("MANIFEST_INVALID", "A hardware ID ends with a newline: a pattern matches the whole string.")
+def manifest_newline_in_id(rng):
+    return signed(*make(rng, fields={"hardware": ["example-hw-a\n"]}))
+
+
 @case("MANIFEST_INVALID", "The component doesn't start with the product.")
 def manifest_component_not_product(rng):
     return signed(*make(rng, fields={"component": "other.unit.app"}))
@@ -545,6 +597,33 @@ def manifest_no_recipients(rng):
     manifest, entries = make(rng)
     del manifest["recipients"]
     return signed(manifest, entries)
+
+
+@case("MANIFEST_INVALID", "chunk_size is written 1024.0, which isn't an integer.")
+def manifest_integer_fraction(rng):
+    return with_manifest_bytes(rng, lambda b: b.replace(b'"chunk_size": 1024', b'"chunk_size": 1024.0', 1))
+
+
+@case("MANIFEST_INVALID", "A payload size above the 8 GiB a ustar entry can hold.")
+def manifest_size_too_large(rng):
+    manifest, entries = make(rng, payloads=[payload(rng, encrypt=False)])
+    manifest["payload"][0]["size"] = 8589934592
+    return signed(manifest, entries)
+
+
+@case("MANIFEST_INVALID", "An unknown field holds an unpaired surrogate escape.")
+def manifest_lone_surrogate(rng):
+    return with_manifest_bytes(rng, lambda b: add_member(b, rb'"future_field": "\ud800"'))
+
+
+@case("MANIFEST_INVALID", "Nested 33 deep in an unknown field.")
+def manifest_too_deep(rng):
+    return with_manifest_bytes(rng, lambda b: at_limits(b, extra_depth=1))
+
+
+@case("MANIFEST_INVALID", "4 097 values.")
+def manifest_too_many_values(rng):
+    return with_manifest_bytes(rng, lambda b: at_limits(b, extra_values=1))
 
 
 # --- 7 KEY_NOT_PERMITTED --------------------------------------------------------------------------

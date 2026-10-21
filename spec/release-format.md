@@ -49,9 +49,14 @@ uploaded one by one) MUST apply the same checks to the same bytes.
 `manifest.json` is a UTF-8 JSON object. Its schema is `schema/manifest.schema.json`. All binary
 values are lowercase hexadecimal.
 
-`manifest.json` and `manifest.sig` MUST be valid UTF-8 without a byte order mark, and MUST NOT
-repeat a member name within an object. Readers reject a repeated name rather than picking one, so
-two readers can never see different values in the same signed manifest.
+`manifest.json` and `manifest.sig` are strict JSON (RFC 8259) with these limits, so that every
+reader, including one on a microcontroller, reads the same document:
+
+- valid UTF-8 without a byte order mark, and no `\u` escape that leaves a surrogate unpaired;
+- no member name repeated within an object. Readers reject a repeated name rather than picking
+  one, so two readers can never see different values in the same signed manifest;
+- at most 4 096 values in total, nested at most 32 deep (the top-level object is depth 1);
+- an integer field is written as an integer: `1`, never `1.0` or `1e0`.
 
 | Field | Required | Meaning |
 | --- | --- | --- |
@@ -277,7 +282,8 @@ bootloader) is that unit's installer and runs all steps.
 
 `vectors/` holds a release file for each case a reader must handle, with the context to check it in
 and the result code it must report. A reader conforms when it reports the expected code for every
-case. `pelco_release/` is the reference implementation the vectors are checked against.
+case. `pelco_release/` is the reference implementation the vectors are checked against;
+`tools/differential.py` also compares a reader with it on releases mutated at random.
 
 ## 9. Ownership
 

@@ -245,6 +245,96 @@
       }
     },
     {
+      "name": "ok-escaped-strings",
+      "file": "ok-escaped-strings.prel",
+      "expected": "OK",
+      "description": "Strings and member names written with escapes are compared after unescaping.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-fraction-in-unknown-field",
+      "file": "ok-fraction-in-unknown-field.prel",
+      "expected": "OK",
+      "description": "A number with a fraction and exponent in an unknown field.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "ok-json-limits",
+      "file": "ok-json-limits.prel",
+      "expected": "OK",
+      "description": "Exactly 4 096 values, nested exactly 32 deep.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
       "name": "ok-unknown-route",
       "file": "ok-unknown-route.prel",
       "expected": "OK",
@@ -1410,6 +1500,36 @@
       }
     },
     {
+      "name": "format-version-fraction",
+      "file": "format-version-fraction.prel",
+      "expected": "FORMAT_UNSUPPORTED",
+      "description": "format_version is written 1.0, which isn't the integer 1.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
       "name": "format-other",
       "file": "format-other.prel",
       "expected": "FORMAT_UNSUPPORTED",
@@ -1650,6 +1770,36 @@
       }
     },
     {
+      "name": "manifest-newline-in-id",
+      "file": "manifest-newline-in-id.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "A hardware ID ends with a newline: a pattern matches the whole string.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
       "name": "manifest-component-not-product",
       "file": "manifest-component-not-product.prel",
       "expected": "MANIFEST_INVALID",
@@ -1804,6 +1954,156 @@
       "file": "manifest-no-recipients.prel",
       "expected": "MANIFEST_INVALID",
       "description": "An encrypted payload and no recipients.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-integer-fraction",
+      "file": "manifest-integer-fraction.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "chunk_size is written 1024.0, which isn't an integer.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-size-too-large",
+      "file": "manifest-size-too-large.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "A payload size above the 8 GiB a ustar entry can hold.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-lone-surrogate",
+      "file": "manifest-lone-surrogate.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "An unknown field holds an unpaired surrogate escape.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-too-deep",
+      "file": "manifest-too-deep.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "Nested 33 deep in an unknown field.",
+      "context": {
+        "checks": "installer",
+        "accept_test": false,
+        "component": "example.unit.app",
+        "hardware": "example-hw-a",
+        "route": "relay",
+        "installed": {
+          "unit": {
+            "example.unit.app": "1.5.0",
+            "example.unit.boot": "1.2.0"
+          },
+          "system": {
+            "example.parent.app": "3.1.0"
+          }
+        },
+        "payload_types": [
+          "raw-bin"
+        ],
+        "recipient_keys": [
+          "vec-device"
+        ],
+        "reinstall": false,
+        "allow_downgrade": false
+      }
+    },
+    {
+      "name": "manifest-too-many-values",
+      "file": "manifest-too-many-values.prel",
+      "expected": "MANIFEST_INVALID",
+      "description": "4 097 values.",
       "context": {
         "checks": "installer",
         "accept_test": false,
